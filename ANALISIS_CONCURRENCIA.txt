@@ -1,0 +1,25 @@
+El componente InMemoryBlueprintPersistence es el encargado de guardar los planos en memoria dentro de nuestra aplicación. Para eso, usa un mapa (tipo HashMap) que almacena cada plano usando como clave el nombre del autor y el nombre del plano.
+
+Dado que nuestra aplicación web puede atender muchas solicitudes al mismo tiempo (ya que funciona en un entorno multihilo), era importante revisar si el código era seguro cuando varios usuarios interactúan con los planos al mismo tiempo.
+
+Problemas encontrados
+
+La implementación original usaba un HashMap, que funciona bien cuando solo hay un hilo accediendo a los datos, pero no cuando hay varios al mismo tiempo. Esto podía causar problemas como:
+
+Lecturas incorrectas si otro usuario está modificando el mismo plano en ese momento.
+
+Dos usuarios podrían guardar planos con el mismo nombre al mismo tiempo, y uno sobrescribiría al otro sin darse cuenta.
+
+El programa incluso podría fallar con errores internos si dos hilos modifican el mapa al mismo tiempo.
+
+Solución aplicada
+
+Para evitar estos problemas, se decidió cambiar el HashMap por un ConcurrentHashMap, que está diseñado para funcionar correctamente cuando varios hilos acceden o modifican los datos al mismo tiempo.
+
+Además, se ajustaron algunos métodos para usar funciones especiales que este tipo de mapa ofrece:
+
+En saveBlueprint, se usó putIfAbsent, que solo guarda un nuevo plano si todavía no existe, y lo hace de forma segura aunque varios hilos lo intenten al mismo tiempo.
+
+En update, se usó replace, que solo actualiza el plano si ya existe, también de manera segura.
+
+Las funciones de lectura no se modificaron, ya que el ConcurrentHashMap permite que varias lecturas se hagan al mismo tiempo sin problema.

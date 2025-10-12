@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Blueprints</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="js/apimock.js"></script>
+    <script src="js/apiclient.js"></script>
+    <script>
+        // var api = apimock;
+         var api = apiclient;
+    </script>
+    <script src="js/app.js"></script>
+</head>
+<body>
+<h1>Blueprints</h1>
+
+<!-- Campo para autor -->
+<label for="inputAuthor">Author</label>
+<input type="text" id="inputAuthor" placeholder="Nombre del autor">
+
+<!-- Botón -->
+<button id="getBlueprints">Get Blueprints</button>
+
+<!-- Autor seleccionado -->
+<h3>Autor seleccionado: <span id="authorName"></span></h3>
+
+<!-- Tabla -->
+<table id="tableBlueprints" class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Blueprint name</th>
+        <th>Number of points</th>
+        <th>Open</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<!-- Total de puntos -->
+<h4>Total de puntos: <span id="totalPoints">0</span></h4>
+
+<!-- Canvas para dibujar el blueprint -->
+<canvas id="blueprintCanvas" width="500" height="500" style="border:1px solid #000; margin-top:15px;">
+    Tu navegador no soporta canvas.
+</canvas>
+
+<h4>Plano seleccionado: <span id="blueprintName">Ninguno</span></h4>
+<script>
+    $(document).ready(function () {
+        $("#getBlueprints").click(function () {
+            let author = $("#inputAuthor").val();
+            if (author) {
+                app.updateBlueprintsTable(author);
+            } else {
+                alert("Por favor ingrese un nombre de autor.");
+            }
+        });
+
+        // Evento ya implementado en app.js para el botón Open de cada fila
+        $("#tableBlueprints").on("click", ".open-btn", function () {
+            let bpName = $(this).data("name");
+            let author = app.getSelectedAuthor();
+            app.drawBlueprintByNameAndAuthor(author, bpName);
+        });
+    });
+</script>
+</body>
+</html>
