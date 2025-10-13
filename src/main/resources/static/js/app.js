@@ -2,6 +2,7 @@ var app = (function(){
 
     var selectedAuthor = null;
     var selectedBlueprints = [];
+    var offset = null;
 
     function updateBlueprints() {
         if (selectedAuthor) {
@@ -20,6 +21,40 @@ var app = (function(){
             selectedBlueprints = [];
         }
     }
+    // Lab 7
+     function initCanvasEvents() {
+             var canvas = document.getElementById("blueprintCanvas"),
+             context = canvas.getContext("2d");
+             offset  = getOffset(canvas);
+             if(window.PointerEvent) {
+               canvas.addEventListener("pointerdown", draw, false);
+             }
+             else {
+               canvas.addEventListener("mousedown", draw, false);
+             }
+           }
+
+           function draw(event) {
+                var canvas = document.getElementById("blueprintCanvas"),
+                context = canvas.getContext("2d");
+                if (!offset) offset = getOffset(canvas);
+                context.fillRect(event.pageX-offset.left, event.pageY-offset.top, 5, 5);
+           }
+
+           function getOffset(obj) {
+               var offsetLeft = 0;
+               var offsetTop = 0;
+               do {
+                 if (!isNaN(obj.offsetLeft)) {
+                     offsetLeft += obj.offsetLeft;
+                 }
+                 if (!isNaN(obj.offsetTop)) {
+                     offsetTop += obj.offsetTop;
+                 }
+               } while(obj = obj.offsetParent );
+               return {left: offsetLeft, top: offsetTop};
+           }
+//Lab 7
 
     return {
         getBlueprintsByAuthor: function (authname, callback) {
@@ -116,7 +151,9 @@ var app = (function(){
                     alert("No se encontró el plano " + bpname + " del autor " + author);
                 }
             });
-        }
+        },
+initCanvasEvents: initCanvasEvents
+
     };
 })();
 
@@ -126,4 +163,5 @@ $(document).ready(function () {
         let author = app.getSelectedAuthor();
         app.drawBlueprintByNameAndAuthor(author, bpName);
     });
+    app.initCanvasEvents();
 });
