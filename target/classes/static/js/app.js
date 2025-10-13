@@ -2,6 +2,8 @@ var app = (function(){
 
     var selectedAuthor = null;
     var selectedBlueprints = [];
+    var offset = null;
+    var currentBlueprint = null;
 
     function updateBlueprints() {
         if (selectedAuthor) {
@@ -20,6 +22,56 @@ var app = (function(){
             selectedBlueprints = [];
         }
     }
+    // Lab 7
+     function initCanvasEvents() {
+             var canvas = document.getElementById("blueprintCanvas"),
+             context = canvas.getContext("2d");
+             offset  = getOffset(canvas);
+             if(window.PointerEvent) {
+               canvas.addEventListener("pointerdown", draw, false);
+             }
+             else {
+               canvas.addEventListener("mousedown", draw, false);
+             }
+           }
+
+           function draw(event) {
+                if (!currentBlueprint) return;
+                var canvas = document.getElementById("blueprintCanvas"),
+                context = canvas.getContext("2d");
+                if (!offset) offset = getOffset(canvas);
+                currentBlueprint.points.push({ x:event.pageX-offset.left, y:event.pageY-offset.top})
+                context.clearRect(0,0,canvas.width,canvas.height)
+                let pts = currentBlueprint.points;
+
+                        if (pts.length > 0) {
+                            context.beginPath();
+                            context.moveTo(pts[0].x, pts[0].y);
+                            for (let i = 1; i < pts.length; i++) {
+                                context.lineTo(pts[i].x, pts[i].y);
+                            }
+                            context.strokeStyle = "blue";
+                            context.lineWidth = 2;
+                            context.stroke();
+                        }
+                context.fillRect(event.pageX-offset.left, event.pageY-offset.top, 5, 5);
+                $("#totalPoints").text(currentBlueprint.points.length);
+           }
+
+           function getOffset(obj) {
+               var offsetLeft = 0;
+               var offsetTop = 0;
+               do {
+                 if (!isNaN(obj.offsetLeft)) {
+                     offsetLeft += obj.offsetLeft;
+                 }
+                 if (!isNaN(obj.offsetTop)) {
+                     offsetTop += obj.offsetTop;
+                 }
+               } while(obj = obj.offsetParent );
+               return {left: offsetLeft, top: offsetTop};
+           }
+//Lab 7
 
     return {
         getBlueprintsByAuthor: function (authname, callback) {
@@ -90,6 +142,7 @@ var app = (function(){
             api.getBlueprintsByAuthor(author, function (bps) {
                 let bp = bps.find(function (e) { return e.name === bpname });
                 if (bp) {
+                    currentBlueprint = bp;
                     // --- Dibujar en canvas ---
                     let canvas = document.getElementById("blueprintCanvas");
                     let ctx = canvas.getContext("2d");
@@ -116,7 +169,8 @@ var app = (function(){
                     alert("No se encontró el plano " + bpname + " del autor " + author);
                 }
             });
-        }
+        },
+initCanvasEvents: initCanvasEvents
     };
 })();
 
@@ -126,4 +180,9 @@ $(document).ready(function () {
         let author = app.getSelectedAuthor();
         app.drawBlueprintByNameAndAuthor(author, bpName);
     });
+    app.initCanvasEvents();
+    $("#saveBlueprintBtn").click(function () {
+        app.saveCurrentBlueprint();
+    });
+
 });

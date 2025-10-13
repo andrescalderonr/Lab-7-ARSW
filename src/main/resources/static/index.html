@@ -48,7 +48,7 @@
 <canvas id="blueprintCanvas" width="500" height="500" style="border:1px solid #000; margin-top:15px;">
     Tu navegador no soporta canvas.
 </canvas>
-
+<button id="saveBlueprints">Save Blueprints</button>
 <h4>Plano seleccionado: <span id="blueprintName">Ninguno</span></h4>
 <script>
     $(document).ready(function () {
@@ -68,6 +68,10 @@
             app.drawBlueprintByNameAndAuthor(author, bpName);
         });
         app.initCanvasEvents();
+        $("#saveBlueprints").click(function () {
+    app.saveCurrentBlueprint();
+});
+
     });
 </script>
 </body>
