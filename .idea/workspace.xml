@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f180916e-10e8-4490-bb2e-3922cedf2fe9" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/PMDPlugin.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ANALISIS_CONCURRENCIA.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Diagrams.asta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/CanvasEventCode.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/DrawPoint2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/mock.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/pagehtml and no errors.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/prueba_dependencias.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/punto 10-11.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/punto 12-1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/punto 12-2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/punto 13.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/punto 2 lab7.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/punto 7.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model.uml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/eci/arsw/blueprints/appMain.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/eci/arsw/blueprints/config/AppConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/eci/arsw/blueprints/controllers/BlueprintAPIController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/eci/arsw/blueprints/controllers/ResourceNotFoundException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/eci/arsw/blueprints/model/Blueprint.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/eci/arsw/blueprints/model/Point.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/eci/arsw/blueprints/persistence/BluePrintFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/eci/arsw/blueprints/persistence/BlueprintNotFoundException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/eci/arsw/blueprints/persistence/BlueprintPersistenceException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/eci/arsw/blueprints/persistence/BlueprintsPersistence.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/eci/arsw/blueprints/persistence/impl/InMemoryBlueprintPersistence.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/eci/arsw/blueprints/persistence/impl/RedundancyFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/eci/arsw/blueprints/persistence/impl/SubsamplingFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/eci/arsw/blueprints/persistence/impl/Tuple.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/eci/arsw/blueprints/services/BlueprintsServices.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/eci/arsw/blueprintsapi/BlueprintsAPIApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/apiclient.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/apimock.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/app.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/edu/eci/arsw/blueprints/test/services/ApplicationServicesTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/edu/eci/arsw/blueprints/appMain.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/edu/eci/arsw/blueprints/config/AppConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/edu/eci/arsw/blueprints/controllers/BlueprintAPIController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/edu/eci/arsw/blueprints/controllers/ResourceNotFoundException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/edu/eci/arsw/blueprints/model/Blueprint.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/edu/eci/arsw/blueprints/model/Point.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/edu/eci/arsw/blueprints/persistence/BluePrintFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/edu/eci/arsw/blueprints/persistence/BlueprintNotFoundException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/edu/eci/arsw/blueprints/persistence/BlueprintPersistenceException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/edu/eci/arsw/blueprints/persistence/BlueprintsPersistence.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/edu/eci/arsw/blueprints/persistence/impl/InMemoryBlueprintPersistence.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/edu/eci/arsw/blueprints/persistence/impl/RedundancyFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/edu/eci/arsw/blueprints/persistence/impl/SubsamplingFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/edu/eci/arsw/blueprints/persistence/impl/Tuple.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/edu/eci/arsw/blueprints/services/BlueprintsServices.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/edu/eci/arsw/blueprintsapi/BlueprintsAPIApplication.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/apiclient.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/apimock.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/app.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/edu/eci/arsw/blueprints/test/services/ApplicationServicesTests.class" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 2
+}]]></component>
+  <component name="ProjectId" id="344qbwuX0ZbdH68VtRhsRwj7Dmb" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main"
+  }
+}]]></component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f180916e-10e8-4490-bb2e-3922cedf2fe9" name="Changes" comment="" />
+      <created>1760483267712</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1760483267712</updated>
+    </task>
+    <servers />
+  </component>
+</project>
