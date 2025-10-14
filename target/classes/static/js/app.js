@@ -1,4 +1,4 @@
-var app = (function(){
+var app = (function () {
 
     var selectedAuthor = null;
     var selectedBlueprints = [];
@@ -22,56 +22,165 @@ var app = (function(){
             selectedBlueprints = [];
         }
     }
-    // Lab 7
-     function initCanvasEvents() {
-             var canvas = document.getElementById("blueprintCanvas"),
-             context = canvas.getContext("2d");
-             offset  = getOffset(canvas);
-             if(window.PointerEvent) {
-               canvas.addEventListener("pointerdown", draw, false);
-             }
-             else {
-               canvas.addEventListener("mousedown", draw, false);
-             }
-           }
 
-           function draw(event) {
-                if (!currentBlueprint) return;
-                var canvas = document.getElementById("blueprintCanvas"),
-                context = canvas.getContext("2d");
-                if (!offset) offset = getOffset(canvas);
-                currentBlueprint.points.push({ x:event.pageX-offset.left, y:event.pageY-offset.top})
-                context.clearRect(0,0,canvas.width,canvas.height)
-                let pts = currentBlueprint.points;
+    function updateBlueprintsTable(authname) {
+        selectedAuthor = authname;
 
-                        if (pts.length > 0) {
-                            context.beginPath();
-                            context.moveTo(pts[0].x, pts[0].y);
-                            for (let i = 1; i < pts.length; i++) {
-                                context.lineTo(pts[i].x, pts[i].y);
-                            }
-                            context.strokeStyle = "blue";
-                            context.lineWidth = 2;
-                            context.stroke();
-                        }
-                context.fillRect(event.pageX-offset.left, event.pageY-offset.top, 5, 5);
-                $("#totalPoints").text(currentBlueprint.points.length);
-           }
+        api.getBlueprintsByAuthor(authname, function (bps) {
+            // 1. Transformar con map
+            let transformed = bps.map(function (bp) {
+                return {
+                    nombre: bp.name,
+                    numPuntos: bp.points.length
+                };
+            });
 
-           function getOffset(obj) {
-               var offsetLeft = 0;
-               var offsetTop = 0;
-               do {
-                 if (!isNaN(obj.offsetLeft)) {
-                     offsetLeft += obj.offsetLeft;
-                 }
-                 if (!isNaN(obj.offsetTop)) {
-                     offsetTop += obj.offsetTop;
-                 }
-               } while(obj = obj.offsetParent );
-               return {left: offsetLeft, top: offsetTop};
-           }
-//Lab 7
+            // Guardar en estado
+            selectedBlueprints = transformed;
+
+            // 2. Limpiar tabla antes de llenarla
+            $("#tableBlueprints tbody").empty();
+
+            // 3. Agregar filas a la tabla con botones Open
+            transformed.map(function (bp) {
+                let row = `<tr>
+                              <td>${bp.nombre}</td>
+                              <td>${bp.numPuntos}</td>
+                              <td><button class="open-btn" data-name="${bp.nombre}">Open</button></td>
+                           </tr>`;
+                $("#tableBlueprints tbody").append(row);
+            });
+
+            // 4. Calcular total de puntos con reduce
+            let total = transformed.reduce(function (acc, bp) {
+                return acc + bp.numPuntos;
+            }, 0);
+
+            // 5. Actualizar el DOM
+            $("#totalPoints").text(total);
+
+            // 6. Mostrar autor en la cabecera
+            $("#authorName").text(authname);
+        });
+    }
+
+    // ---------------------- LAB 7 ----------------------
+
+    function initCanvasEvents() {
+        var canvas = document.getElementById("blueprintCanvas"),
+            context = canvas.getContext("2d");
+        offset = getOffset(canvas);
+        if (window.PointerEvent) {
+            canvas.addEventListener("pointerdown", draw, false);
+        } else {
+            canvas.addEventListener("mousedown", draw, false);
+        }
+    }
+
+    function draw(event) {
+        if (!currentBlueprint) return;
+
+        var canvas = document.getElementById("blueprintCanvas"),
+            context = canvas.getContext("2d");
+
+        if (!offset) offset = getOffset(canvas);
+
+        const rect = canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+
+        currentBlueprint.points.push({ x: x, y: y });
+
+        // Limpiar y redibujar
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        let pts = currentBlueprint.points;
+
+        if (pts.length > 0) {
+            context.beginPath();
+            context.moveTo(pts[0].x, pts[0].y);
+            for (let i = 1; i < pts.length; i++) {
+                context.lineTo(pts[i].x, pts[i].y);
+            }
+            context.strokeStyle = "blue";
+            context.lineWidth = 2;
+            context.stroke();
+        }
+
+        pts.forEach(pt => context.fillRect(pt.x, pt.y, 5, 5));
+        $("#totalPoints").text(currentBlueprint.points.length);
+    }
+
+    function getOffset(obj) {
+        var offsetLeft = 0;
+        var offsetTop = 0;
+        do {
+            if (!isNaN(obj.offsetLeft)) {
+                offsetLeft += obj.offsetLeft;
+            }
+            if (!isNaN(obj.offsetTop)) {
+                offsetTop += obj.offsetTop;
+            }
+        } while (obj = obj.offsetParent);
+        return { left: offsetLeft, top: offsetTop };
+    }
+
+    function saveCurrentBlueprint() {
+        if (!currentBlueprint) {
+            alert("No hay un plano seleccionado para guardar.");
+            return;
+        }
+
+        const blueprintToSend = {
+            author: currentBlueprint.author,
+            name: currentBlueprint.name,
+            points: [...currentBlueprint.points] // Copia de los puntos actuales
+        };
+
+        // Convertimos updateBlueprint en promesa
+        const updatePromise = new Promise((resolve, reject) => {
+            api.updateBlueprint(currentBlueprint.author, currentBlueprint.name, blueprintToSend, function (data) {
+                resolve(data);
+            });
+        });
+
+        updatePromise
+            .then(() => {
+                // Convertimos getBlueprintsByAuthor en promesa
+                return new Promise((resolve, reject) => {
+                    api.getBlueprintsByAuthor(currentBlueprint.author, function (bps) {
+                        resolve(bps);
+                    });
+                });
+            })
+            .then((bps) => {
+                // Actualizamos selectedBlueprints y la tabla
+                selectedBlueprints = bps.map(bp => ({
+                    nombre: bp.name,
+                    numPuntos: bp.points.length
+                }));
+
+                $("#tableBlueprints tbody").empty();
+                selectedBlueprints.forEach(bp => {
+                    let row = `<tr>
+                                   <td>${bp.nombre}</td>
+                                   <td>${bp.numPuntos}</td>
+                                   <td><button class="open-btn" data-name="${bp.nombre}">Open</button></td>
+                               </tr>`;
+                    $("#tableBlueprints tbody").append(row);
+                });
+
+                const total = selectedBlueprints.reduce((acc, bp) => acc + bp.numPuntos, 0);
+                $("#totalPoints").text(total);
+
+                alert("Plano actualizado correctamente!");
+            })
+            .catch(err => {
+                console.error("Error guardando el plano:", err);
+                alert("Error al actualizar el plano");
+            });
+    }
+
+    // ---------------------- EXPORTS ----------------------
 
     return {
         getBlueprintsByAuthor: function (authname, callback) {
@@ -97,53 +206,12 @@ var app = (function(){
             return selectedBlueprints;
         },
 
-        updateBlueprintsTable: function (authname) {
-            selectedAuthor = authname;
-
-            api.getBlueprintsByAuthor(authname, function (bps) {
-                // 1. Transformar con map
-                let transformed = bps.map(function (bp) {
-                    return {
-                        nombre: bp.name,
-                        numPuntos: bp.points.length
-                    };
-                });
-
-                // Guardar en estado
-                selectedBlueprints = transformed;
-
-                // 2. Limpiar tabla antes de llenarla
-                $("#tableBlueprints tbody").empty();
-
-                // 3. Agregar filas a la tabla con botones Open
-                transformed.map(function (bp) {
-                    let row = `<tr>
-                                  <td>${bp.nombre}</td>
-                                  <td>${bp.numPuntos}</td>
-                                  <td><button class="open-btn" data-name="${bp.nombre}">Open</button></td>
-                               </tr>`;
-                    $("#tableBlueprints tbody").append(row);
-                });
-
-                // 4. Calcular total de puntos con reduce
-                let total = transformed.reduce(function (acc, bp) {
-                    return acc + bp.numPuntos;
-                }, 0);
-
-                // 5. Actualizar el DOM
-                $("#totalPoints").text(total);
-                // 6. Mostrar autor en la cabecera
-                $("#authorName").text(authname);
-            });
-        },
-
-        // Nueva operación: dibujar blueprint por nombre y autor
+        // Dibujar blueprint por nombre y autor
         drawBlueprintByNameAndAuthor: function (author, bpname) {
             api.getBlueprintsByAuthor(author, function (bps) {
                 let bp = bps.find(function (e) { return e.name === bpname });
                 if (bp) {
                     currentBlueprint = bp;
-                    // --- Dibujar en canvas ---
                     let canvas = document.getElementById("blueprintCanvas");
                     let ctx = canvas.getContext("2d");
 
@@ -161,16 +229,19 @@ var app = (function(){
                         ctx.strokeStyle = "blue";
                         ctx.lineWidth = 2;
                         ctx.stroke();
+                        bp.points.forEach(pt => ctx.fillRect(pt.x, pt.y, 5, 5));
                     }
 
-                    // --- Actualizar el DOM con el nombre del plano ---
                     $("#blueprintName").text(bp.name);
                 } else {
                     alert("No se encontró el plano " + bpname + " del autor " + author);
                 }
             });
         },
-initCanvasEvents: initCanvasEvents
+
+        initCanvasEvents: initCanvasEvents,
+        saveCurrentBlueprint: saveCurrentBlueprint,
+        updateBlueprintsTable: updateBlueprintsTable
     };
 })();
 
@@ -180,9 +251,10 @@ $(document).ready(function () {
         let author = app.getSelectedAuthor();
         app.drawBlueprintByNameAndAuthor(author, bpName);
     });
+
     app.initCanvasEvents();
-    $("#saveBlueprintBtn").click(function () {
+
+    $("#saveBlueprints").click(function () {
         app.saveCurrentBlueprint();
     });
-
 });
