@@ -13,7 +13,7 @@ var app = (function () {
         var canvas = document.getElementById("canvas");
         var ctx = canvas.getContext("2d");
         ctx.beginPath();
-        ctx.arc(point.x, point.y, 3, 0, 2 * Math.PI);
+        ctx.arc(point.x, point.y, 1, 0, 2 * Math.PI);
         ctx.stroke();
     };
     
@@ -40,7 +40,6 @@ var app = (function () {
                 var theObject = JSON.parse(message.body);
                 console.log("Punto recibido:", theObject);
                 addPointToCanvas(theObject)
-                alert("Nuevo punto recibido -> X: " + theObject.x + " , Y: " + theObject.y);
             });
         });
 
@@ -52,7 +51,11 @@ var app = (function () {
 
         init: function () {
             var can = document.getElementById("canvas");
-            
+            can.addEventListener("click", function(event){
+                var pos = getMousePosition(event);
+                var pt = new Point(pos.x, pos.y);
+                app.publishPoint(pt.x, pt.y);
+            });
             //websocket connection
             connectAndSubscribe();
         },
