@@ -42,22 +42,22 @@ Para esto, realice lo siguiente:
 	stompClient.send("/topic/newpoint", {}, JSON.stringify(pt)); 
 	```
 
-![](/parte%202/img/Punto1parte1.png)
+![](/../parte%202/img/Punto1parte1.png)
 
 2. Dentro del módulo JavaScript modifique la función de conexión/suscripción al WebSocket, para que la aplicación se suscriba al tópico "/topic/newpoint" (en lugar del tópico /TOPICOXX). Asocie como 'callback' de este suscriptor una función que muestre en un mensaje de alerta (alert()) el evento recibido. Como se sabe que en el tópico indicado se publicarán sólo puntos, extraiga el contenido enviado con el evento (objeto JavaScript en versión de texto), conviértalo en objeto JSON, y extraiga de éste sus propiedades (coordenadas X y Y). Para extraer el contenido del evento use la propiedad 'body' del mismo, y para convertirlo en objeto, use JSON.parse. Por ejemplo:
 
 	```javascript
 	var theObject=JSON.parse(message.body);
 	```
-![](/parte%202/img/Punto2parte1.png)
+![](/../parte%202/img/Punto2parte1.png)
 
 3. Compile y ejecute su aplicación. Abra la aplicación en varias pestañas diferentes (para evitar problemas con el caché del navegador, use el modo 'incógnito' en cada prueba).
 
-![](/parte%202/img/punto3parte1.png)
+![](/../parte%202/img/punto3parte1.png)
 
 4. Ingrese los datos, ejecute la acción del botón, y verifique que en todas la pestañas se haya lanzado la alerta con los datos ingresados.
 
-![](/parte%202/img/punto4parte1.png)
+![](/../parte%202/img/punto4parte1.png)
 
 5. Haga commit de lo realizado, para demarcar el avance de la parte 2.
 
@@ -72,11 +72,11 @@ Para hacer mas útil la aplicación, en lugar de capturar las coordenadas con ca
 
 1. Haga que el 'callback' asociado al tópico /topic/newpoint en lugar de mostrar una alerta, dibuje un punto en el canvas en las coordenadas enviadas con los eventos recibidos. Para esto puede [dibujar un círculo de radio 1](http://www.w3schools.com/html/html5_canvas.asp).
 
-![](/parte%202/img/Punto1parte2.png)
+![](/../parte%202/img/Punto1parte2.png)
 
 2. Ejecute su aplicación en varios navegadores (y si puede en varios computadores, accediendo a la aplicación mendiante la IP donde corre el servidor). Compruebe que a medida que se dibuja un punto, el mismo es replicado en todas las instancias abiertas de la aplicación.
 
-![](/parte%202/img/Punto2.parte2.png)
+![](/../parte%202/img/Punto2.parte2.png)
 
 3. Haga commit de lo realizado, para marcar el avance de la parte 2.
 
@@ -90,17 +90,17 @@ Ajuste la aplicación anterior para que pueda manejar más de un dibujo a la vez
 
 1. Agregue un campo en la vista, en el cual el usuario pueda ingresar un número. El número corresponderá al identificador del dibujo que se creará.
 
-![](/parte%202/img/Punto1parte3.png)
+![](/../parte%202/img/Punto1parte3.png)
 
 2. Modifique la aplicación para que, en lugar de conectarse y suscribirse automáticamente (en la función init()), lo haga a través de botón 'conectarse'. Éste, al oprimirse debe realizar la conexión y suscribir al cliente a un tópico que tenga un nombre dinámico, asociado el identificador ingresado, por ejemplo: /topic/newpoint.25, topic/newpoint.80, para los dibujos 25 y 80 respectivamente.
 
-![](/parte%202/img/punto2parte3.png)
+![](/../parte%202/img/punto2parte3.png)
 
 3. De la misma manera, haga que las publicaciones se realicen al tópico asociado al identificador ingresado por el usuario.
 
-![](/parte%202/img/Punto3parte3.png)
+![](/../parte%202/img/Punto3parte3.png)
 
-![](/parte%202/img/punto3p3.png)
+![](/../parte%202/img/punto3p3.png)
 
 4. Rectifique que se puedan realizar dos dibujos de forma independiente, cada uno de éstos entre dos o más clientes.
 
@@ -108,7 +108,7 @@ Ajuste la aplicación anterior para que pueda manejar más de un dibujo a la vez
 	git commit -m "PARTE 3".
 	```
 
-![](/parte%202/img/Punto4parte3.png)
+![](/../parte%202/img/Punto4parte3.png)
 
 
 ## Parte IV.
@@ -141,7 +141,13 @@ Para ver cómo manejar esto desde el manejador de eventos STOMP del servidor, re
 
 	```
 
+![](/../parte%202/img/parte4punto1.png)
+
 2. Ajuste su cliente para que, en lugar de publicar los puntos en el tópico /topic/newpoint.{numdibujo}, lo haga en /app/newpoint.{numdibujo}. Ejecute de nuevo la aplicación y rectifique que funcione igual, pero ahora mostrando en el servidor los detalles de los puntos recibidos.
+
+![](/../parte%202/img/parte4punto2.png)
+
+![](/../parte%202/img/parte4resultado2.png)
 
 3. Una vez rectificado el funcionamiento, se quiere aprovechar este 'interceptor' de eventos para cambiar ligeramente la funcionalidad:
 
@@ -150,9 +156,12 @@ Para ver cómo manejar esto desde el manejador de eventos STOMP del servidor, re
 
 	3. El cliente, ahora también se suscribirá al tópico '/topic/newpolygon'. El 'callback' asociado a la recepción de eventos en el mismo debe, con los datos recibidos, dibujar un polígono, [tal como se muestran en ese ejemplo](http://www.arungudelli.com/html5/html5-canvas-polygon/).
 	4. Verifique la funcionalidad: igual a la anterior, pero ahora dibujando polígonos cada vez que se agreguen cuatro puntos.
-	
+
+![](/../parte%202/img/polygon.png)
 	
 4. A partir de los diagramas dados en el archivo ASTAH incluido, haga un nuevo diagrama de actividades correspondiente a lo realizado hasta este punto, teniendo en cuenta el detalle de que ahora se tendrán tópicos dinámicos para manejar diferentes dibujos simultáneamente.
+
+
 
 5. Haga commit de lo realizado.
 
