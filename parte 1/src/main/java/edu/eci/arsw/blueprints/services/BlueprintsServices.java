@@ -80,4 +80,7 @@ public class BlueprintsServices {
         bpp.update(author,name,bp);
     }
 
+    public void delete(String author, String bpname){
+        bpp.delete(author,bpname);
+    }
 }

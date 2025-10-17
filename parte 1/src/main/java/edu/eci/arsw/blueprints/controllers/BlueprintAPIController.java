@@ -109,6 +109,16 @@ public class BlueprintAPIController {
         }
     }
 
+    @DeleteMapping("/{author}/{bpname}")
+    public ResponseEntity<?> delete(@PathVariable String author, @PathVariable String bpname) {
+        try {
+            blueprintServices.delete(author, bpname);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error deleting blueprint", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
 
 

@@ -10,7 +10,20 @@ apiclient = (function () {
                 alert("Error obteniendo planos del autor: " + author);
             });
         },
-
+        addBlueprint: function (bp, callback) {
+            $.ajax({
+                url: apiUrl,
+                type: "POST",
+                data: JSON.stringify(bp),
+                contentType: "application/json",
+                success: function (data) {
+                    callback(data);
+                },
+                error: function () {
+                    alert("Error al crear el plano");
+                }
+            });
+        },
         getBlueprintsByNameAndAuthor: function (author, name, callback) {
             $.get(apiUrl + "/" + author + "/" + name, function (data) {
                 // Ojo: el backend devuelve un Set (conjunto) aunque sea un solo plano
@@ -39,7 +52,18 @@ apiclient = (function () {
                 }
             });
         },
-
+        deleteBlueprint: function (author, name, callback) {
+            $.ajax({
+                url: apiUrl + "/" + author + "/" + name,
+                type: "DELETE",
+                success: function () {
+                    callback();
+                },
+                error: function () {
+                    alert("Error al eliminar el plano " + name + " del autor " + author);
+                }
+            });
+        },
         updateBlueprint: function (author, name, bp, callback) {
             $.ajax({
                 url: apiUrl + "/" + author + "/" + name,

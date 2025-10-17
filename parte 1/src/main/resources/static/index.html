@@ -50,6 +50,13 @@
 </canvas>
 <button id="saveBlueprints">Save Blueprints</button>
 <h4>Plano seleccionado: <span id="blueprintName">Ninguno</span></h4>
+<hr>
+<h4>Crear nuevo blueprint</h4>
+
+<label for="newBlueprintName">Nombre del nuevo blueprint:</label>
+<input type="text" id="newBlueprintName" placeholder="Nombre del blueprint" style="margin-right:10px;">
+
+<button id="createBlueprintBtn" class="btn btn-success">Create new blueprint</button>
 <script>
     $(document).ready(function () {
         $("#getBlueprints").click(function () {
@@ -61,7 +68,6 @@
             }
         });
 
-        // Evento ya implementado en app.js para el botón Open de cada fila
         $("#tableBlueprints").on("click", ".open-btn", function () {
             let bpName = $(this).data("name");
             let author = app.getSelectedAuthor();
@@ -73,6 +79,35 @@
 });
 
     });
+
+$("#createBlueprintBtn").click(function () {
+    const author = $("#inputAuthor").val().trim(); // 👈 toma el autor de arriba
+    const bpName = $("#newBlueprintName").val().trim(); // 👈 nombre del nuevo blueprint
+
+    if (!author) {
+        alert("Por favor ingrese un nombre de autor antes de crear el blueprint.");
+        return;
+    }
+    if (!bpName) {
+        alert("Por favor ingrese un nombre para el nuevo blueprint.");
+        return;
+    }
+
+    app.createNewBlueprint(author, bpName);
+});
+// Evento para eliminar blueprint
+$("#tableBlueprints").on("click", ".delete-btn", function () {
+    let bpName = $(this).data("name");
+    let author = app.getSelectedAuthor();
+
+    if (confirm(`¿Seguro que deseas eliminar el plano "${bpName}" del autor "${author}"?`)) {
+        api.deleteBlueprint(author, bpName, function () {
+            alert("Plano eliminado correctamente!");
+            app.updateBlueprintsTable(author);
+        });
+    }
+});
+
 </script>
 </body>
 </html>

@@ -46,8 +46,6 @@
 	```
 	* Como en este caso se tienen tres operaciones basadas en _callbacks_, y que las mismas requieren realizarse en un orden específico, tenga en cuenta cómo usar las promesas de JavaScript [mediante alguno de los ejemplos disponibles](http://codepen.io/hcadavid/pen/jrwdgK).
 
-    
-
 4. Agregue el botón 'Create new blueprint', de manera que cuando se oprima: 
 	* Se borre el canvas actual.
 	* Se solicite el nombre del nuevo 'blueprint' (usted decide la manera de hacerlo).
@@ -57,10 +55,22 @@
 	1. Hacer POST al recurso /blueprints, para crear el nuevo plano.
 	2. Hacer GET a este mismo recurso, para actualizar el listado de planos y el puntaje del usuario.
 
+
+Se crea una seccion debajo del canvas donde se solicita el nombre de la nueva blueprint
+![](img/punto%203_1.png)
+Tras crearse el canva estara vacio y se podra dibujar en este
+![](img/punto%203_2.png)
+Al darle a guardar se actualiza el listado y la cantidad de puntos como fue solicitado
+
 5. Agregue el botón 'DELETE', de manera que (también con promesas):
 	* Borre el canvas.
 	* Haga DELETE del recurso correspondiente.
 	* Haga GET de los planos ahora disponibles.
+
+Al lado del opn se creo un delete en el cual permite la eliminacion del recurso
+![](img/punto%204.png)
+Tiene una confirmacion y tras esta se actualiza automaticamente el listado
+![](img/punto%205.png)
 
 ### Criterios de evaluación
 

@@ -27,39 +27,33 @@ var app = (function () {
         selectedAuthor = authname;
 
         api.getBlueprintsByAuthor(authname, function (bps) {
-            // 1. Transformar con map
             let transformed = bps.map(function (bp) {
                 return {
                     nombre: bp.name,
                     numPuntos: bp.points.length
                 };
             });
-
-            // Guardar en estado
             selectedBlueprints = transformed;
-
-            // 2. Limpiar tabla antes de llenarla
             $("#tableBlueprints tbody").empty();
-
-            // 3. Agregar filas a la tabla con botones Open
             transformed.map(function (bp) {
-                let row = `<tr>
-                              <td>${bp.nombre}</td>
-                              <td>${bp.numPuntos}</td>
-                              <td><button class="open-btn" data-name="${bp.nombre}">Open</button></td>
-                           </tr>`;
+                let row = `
+                    <tr>
+                        <td>${bp.nombre}</td>
+                        <td>${bp.numPuntos}</td>
+                        <td>
+                            <button class="open-btn" data-name="${bp.nombre}">Open</button>
+                            <button class="delete-btn btn btn-danger btn-sm" data-name="${bp.nombre}">Delete</button>
+                        </td>
+                    </tr>`;
                 $("#tableBlueprints tbody").append(row);
             });
 
-            // 4. Calcular total de puntos con reduce
             let total = transformed.reduce(function (acc, bp) {
                 return acc + bp.numPuntos;
             }, 0);
 
-            // 5. Actualizar el DOM
             $("#totalPoints").text(total);
 
-            // 6. Mostrar autor en la cabecera
             $("#authorName").text(authname);
         });
     }
@@ -107,7 +101,6 @@ var app = (function () {
         }
 
         pts.forEach(pt => context.fillRect(pt.x, pt.y, 5, 5));
-        $("#totalPoints").text(currentBlueprint.points.length);
     }
 
     function getOffset(obj) {
@@ -124,6 +117,23 @@ var app = (function () {
         return { left: offsetLeft, top: offsetTop };
     }
 
+    function createNewBlueprint(author, bpName) {
+        currentBlueprint = {
+            author: author,
+            name: bpName,
+            points: []
+        };
+
+        const canvas = document.getElementById("blueprintCanvas");
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        $("#blueprintName").text(bpName);
+        $("#authorName").text(author);
+
+        alert(`Nuevo blueprint "${bpName}" creado. Puede comenzar a dibujar.`);
+    }
+
     function saveCurrentBlueprint() {
         if (!currentBlueprint) {
             alert("No hay un plano seleccionado para guardar.");
@@ -133,52 +143,50 @@ var app = (function () {
         const blueprintToSend = {
             author: currentBlueprint.author,
             name: currentBlueprint.name,
-            points: [...currentBlueprint.points] // Copia de los puntos actuales
+            points: [...currentBlueprint.points]
         };
 
-        // Convertimos updateBlueprint en promesa
-        const updatePromise = new Promise((resolve, reject) => {
-            api.updateBlueprint(currentBlueprint.author, currentBlueprint.name, blueprintToSend, function (data) {
-                resolve(data);
-            });
+        const isNew = !selectedBlueprints.some(bp => bp.nombre === currentBlueprint.name);
+
+        const savePromise = new Promise((resolve, reject) => {
+            if (isNew) {
+                api.addBlueprint(blueprintToSend, resolve);
+            } else {
+                api.updateBlueprint(currentBlueprint.author, currentBlueprint.name, blueprintToSend, resolve);
+            }
         });
 
-        updatePromise
+        savePromise
             .then(() => {
-                // Convertimos getBlueprintsByAuthor en promesa
-                return new Promise((resolve, reject) => {
-                    api.getBlueprintsByAuthor(currentBlueprint.author, function (bps) {
-                        resolve(bps);
-                    });
+                return new Promise((resolve) => {
+                    api.getBlueprintsByAuthor(currentBlueprint.author, resolve);
                 });
             })
             .then((bps) => {
-                // Actualizamos selectedBlueprints y la tabla
                 selectedBlueprints = bps.map(bp => ({
                     nombre: bp.name,
                     numPuntos: bp.points.length
                 }));
 
-                $("#tableBlueprints tbody").empty();
-                selectedBlueprints.forEach(bp => {
-                    let row = `<tr>
-                                   <td>${bp.nombre}</td>
-                                   <td>${bp.numPuntos}</td>
-                                   <td><button class="open-btn" data-name="${bp.nombre}">Open</button></td>
-                               </tr>`;
-                    $("#tableBlueprints tbody").append(row);
+                $("#tableBlueprints").on("click", ".open-btn", function () {
+                    let bpName = String($(this).data("name"));
+                    let author = app.getSelectedAuthor();
+                    app.drawBlueprintByNameAndAuthor(author, bpName);
                 });
+
 
                 const total = selectedBlueprints.reduce((acc, bp) => acc + bp.numPuntos, 0);
                 $("#totalPoints").text(total);
+                app.updateBlueprintsTable(currentBlueprint.author);
 
-                alert("Plano actualizado correctamente!");
+                alert(isNew ? "Nuevo blueprint creado correctamente!" : "Blueprint actualizado correctamente!");
             })
             .catch(err => {
-                console.error("Error guardando el plano:", err);
-                alert("Error al actualizar el plano");
+                console.error("Error al guardar el plano:", err);
+                alert("Error al guardar el plano.");
             });
     }
+
 
     // ---------------------- EXPORTS ----------------------
 
@@ -205,11 +213,11 @@ var app = (function () {
         getSelectedBlueprints: function () {
             return selectedBlueprints;
         },
-
+        createNewBlueprint: createNewBlueprint,
         // Dibujar blueprint por nombre y autor
         drawBlueprintByNameAndAuthor: function (author, bpname) {
             api.getBlueprintsByAuthor(author, function (bps) {
-                let bp = bps.find(function (e) { return e.name === bpname });
+                let bp = bps.find(function (e) { return String(e.name) === String(bpname); });
                 if (bp) {
                     currentBlueprint = bp;
                     let canvas = document.getElementById("blueprintCanvas");
@@ -244,17 +252,3 @@ var app = (function () {
         updateBlueprintsTable: updateBlueprintsTable
     };
 })();
-
-$(document).ready(function () {
-    $("#tableBlueprints").on("click", ".open-btn", function () {
-        let bpName = $(this).data("name");
-        let author = app.getSelectedAuthor();
-        app.drawBlueprintByNameAndAuthor(author, bpName);
-    });
-
-    app.initCanvasEvents();
-
-    $("#saveBlueprints").click(function () {
-        app.saveCurrentBlueprint();
-    });
-});
