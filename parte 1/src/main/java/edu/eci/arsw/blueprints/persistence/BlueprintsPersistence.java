@@ -41,5 +41,7 @@ public interface BlueprintsPersistence {
 
     public Set<Blueprint> getAllBluePrints();
 
-    public void  update(String author, String name, Blueprint bp);
+    public void update(String author, String name, Blueprint bp);
+
+    public void delete(String author, String bpname);
 }

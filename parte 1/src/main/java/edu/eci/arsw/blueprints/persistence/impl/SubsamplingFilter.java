@@ -13,16 +13,18 @@ public class SubsamplingFilter implements BluePrintFilter {
 
     @Override
     public Blueprint applyFilter(Blueprint blueprint) {
-        List<Point> originalPoints = blueprint.getPoints();
-        List<Point> filteredPoints = new ArrayList<>();
+//        List<Point> originalPoints = blueprint.getPoints();
+//        List<Point> filteredPoints = new ArrayList<>();
+//
+//        for (int i = 0; i < originalPoints.size(); i++) {
+//            if (i % 2 == 0) {
+//                filteredPoints.add(originalPoints.get(i));
+//            }
+//        }
+//
+//        Point[] filteredArray = filteredPoints.toArray(new Point[0]);
+//        return new Blueprint(blueprint.getAuthor(), blueprint.getName(), filteredArray);
 
-        for (int i = 0; i < originalPoints.size(); i++) {
-            if (i % 2 == 0) {
-                filteredPoints.add(originalPoints.get(i));
-            }
-        }
-
-        Point[] filteredArray = filteredPoints.toArray(new Point[0]);
-        return new Blueprint(blueprint.getAuthor(), blueprint.getName(), filteredArray);
+        return blueprint; //esto es por motivos de laboratorio actual
     }
 }
