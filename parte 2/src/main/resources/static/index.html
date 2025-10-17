@@ -30,6 +30,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     
     <body onload="app.init()">
+    <label> Id del dibujo </label>
+    <label for="drawId"></label><input type="number" id="drawId"/>
+    <button onclick="app.connect()"> Conectarse</button>
     <h3>Haz clic o toca el canvas para dibujar puntos</h3>
     <canvas id="canvas" width="800" height="600"></canvas>
     </body>
